@@ -1,0 +1,19 @@
+name: causality
+channels:
+- defaults
+- conda-forge
+- ericmjl
+dependencies:
+- python=3.7
+- jupyter
+- jupyterlab
+- jupyter_contrib_nbextensions
+- matplotlib
+- numpy
+- pandas
+- seaborn
+- statsmodels
+- networkx
+- pytest
+- mkdocs
+- pre-commit
