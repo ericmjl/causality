@@ -64,3 +64,7 @@ docs/_build/
 target/
 *.DS_Store
 .DS_Store
+
+# Custom
+.vscode/settings.json
+default.profraw
