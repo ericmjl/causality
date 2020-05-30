@@ -1,6 +1,6 @@
 import pytest
 
-from custom import rule1, rule2, rule3
+from causality_notes import rule1, rule2, rule3
 
 
 @pytest.fixture

@@ -1,0 +1,65 @@
+site_name: causality
+site_url: https://ericmjl.github.io/causality
+
+theme:
+  name: "material"
+  palette:
+    primary: "blue"
+    accent: "blue"
+  icon:
+    logo: "fontawesome/solid/book"
+  features:
+    - instant
+    # - tabs
+  language: en
+
+# We customize the navigation by hand to control the order
+# in which pages show up.
+nav:
+  - causality:
+      - Welcome: index.md
+  - Notebooks:
+      - "01: Linear Simulation": 01-causality-linear-simulation.ipynb
+      - "02: Instrument Variables": 02-instrument-variables.ipynb
+      - "03: d-Separation": 03-d-separation.ipynb
+      - "04: Finding Confounding Set": 04-finding-confounding-set.ipynb
+      - "05: Collider Effect": 05-collider-effect.ipynb
+      - "06: Causal Identifiability": 06-causality-identifiability.ipynb
+
+plugins:
+  - search
+  - mknotebooks:
+      execute: true
+      write_markdown: true
+      allow_errors: true
+      timeout: 1200
+
+# Taken from here: https://squidfunk.github.io/mkdocs-material/extensions/codehilite/
+markdown_extensions:
+  - codehilite
+  - admonition
+  - pymdownx.tabbed
+  - pymdownx.arithmatex
+  - pymdownx.details
+  - pymdownx.superfences
+  - markdown.extensions.attr_list
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  - https://hypothes.is/embed.js
+
+extra_css:
+  - css/nb_mods.css
+#   - css/apidocs.css
+
+# repo_name: null
+# repo_url: null
+
+extra:
+  social:
+    - icon: "fontawesome/brands/github"
+      link: "https://github.com/ericmjl"
+    - icon: "fontawesome/brands/twitter"
+      link: "https://twitter.com/ericmjl"
+    - icon: "fontawesome/brands/linkedin"
+      link: "https://linkedin.com/in/ericmjl"

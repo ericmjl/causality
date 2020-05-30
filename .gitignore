@@ -65,6 +65,10 @@ target/
 *.DS_Store
 .DS_Store
 
+# mkdocs
+site/
+
 # Custom
 .vscode/settings.json
 default.profraw
+*.md.tmp
