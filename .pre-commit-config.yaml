@@ -13,7 +13,8 @@ repos:
   rev: 19.3b0
   hooks:
   - id: black
-- repo: https://gitlab.com/iamlikeme/nbhooks
-  rev: 1.0.0
+- repo: https://github.com/kynan/nbstripout
+  rev: master
   hooks:
-  - id: nb-ensure-clean
+  - id: nbstripout
+    files: ".ipynb"
