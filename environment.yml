@@ -13,6 +13,8 @@ dependencies:
   - jupyterlab
   - matplotlib
   - mkdocs
+  - mkdocstrings
+  - mkdocs-material=8.1.3
   - mypy
   - nbstripout
   - networkx
@@ -29,8 +31,5 @@ dependencies:
   - seaborn
   - statsmodels
   - pip:
-      - mkdocs
-      - mkdocs-material
-      - mkdocstrings
       - mknotebooks
       - daft
