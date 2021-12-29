@@ -25,6 +25,7 @@ nav:
       - "04: Finding Confounding Set": 04-finding-confounding-set.ipynb
       - "05: Collider Effect": 05-collider-effect.ipynb
       - "06: Causal Identifiability": 06-causality-identifiability.ipynb
+      - "07: The Do Operator": 07-do-operator.ipynb
 
 plugins:
   - search
