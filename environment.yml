@@ -13,8 +13,8 @@ dependencies:
   - jupyterlab
   - matplotlib
   - mkdocs
-  - mkdocstrings
   - mkdocs-material=8.1.3
+  - mkdocstrings
   - mypy
   - nbstripout
   - networkx
@@ -26,6 +26,7 @@ dependencies:
   - pydocstyle
   - pymc=4.0
   - pytest
+  - python-graphviz
   - scikit-learn
   - scipy
   - seaborn
