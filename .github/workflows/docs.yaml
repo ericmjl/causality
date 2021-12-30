@@ -27,6 +27,7 @@ jobs:
 
       - name: Build docs
         run: |
+          conda activate causality
           python -m ipykernel install --user --name causality
           make docs
 
