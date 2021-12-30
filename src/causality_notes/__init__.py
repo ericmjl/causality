@@ -12,7 +12,8 @@ def draw_graph(G, edge_weight=None, layout: str = "kamada_kawai"):
         nx.draw_networkx_edge_labels(G, pos=pos, edge_labels=edge_labels)
 
     nx.draw_networkx_edges(G, pos)
-    nx.draw_networkx_nodes(G, pos, with_labels=True)
+    nx.draw_networkx_nodes(G, pos)
+    nx.draw_networkx_labels(G, pos)
     nx.draw_kamada_kawai(G, with_labels=True)
 
 
