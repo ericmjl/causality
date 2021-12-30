@@ -32,7 +32,7 @@ plugins:
   - mknotebooks:
       execute: true
       write_markdown: true
-      allow_errors: true
+      allow_errors: false
       timeout: 1200
 
 # Taken from here: https://squidfunk.github.io/mkdocs-material/extensions/codehilite/
@@ -51,10 +51,7 @@ extra_javascript:
 
 extra_css:
   - css/nb_mods.css
-#   - css/apidocs.css
 
-# repo_name: null
-# repo_url: null
 
 extra:
   social:
