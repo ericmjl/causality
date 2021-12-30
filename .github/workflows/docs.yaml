@@ -27,9 +27,8 @@ jobs:
 
       - name: Build docs
         run: |
-          conda activate causality
-          python -m ipykernel install --user --name causality
-          mkdocs build
+          $CONDA/envs/causality/bin/python -m ipykernel install --user --name causality
+          $CONDA/envs/causality/bin/mkdocs build
 
       - name: Deploy website
         uses: peaceiris/actions-gh-pages@v3
