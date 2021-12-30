@@ -9,6 +9,12 @@ jobs:
   build-docs:
     runs-on: ubuntu-20.04
     name: Build docs
+
+    # https://github.com/marketplace/actions/setup-miniconda#use-a-default-shell
+    defaults:
+      run:
+        shell: bash -l {0}
+
     steps:
       - uses: actions/checkout@v2
         name: Checkout repository
@@ -27,8 +33,9 @@ jobs:
 
       - name: Build docs
         run: |
-          $CONDA/envs/causality/bin/python -m ipykernel install --user --name causality
-          $CONDA/envs/causality/bin/mkdocs build
+          conda activate causality
+          python -m ipykernel install --user --name causality
+          mkdocs build
 
       - name: Deploy website
         uses: peaceiris/actions-gh-pages@v3
