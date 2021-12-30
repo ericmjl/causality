@@ -20,7 +20,6 @@ jobs:
           auto-update-conda: true
           miniforge-variant: Mambaforge
           channels: conda-forge
-          mamba-version: "*"
           python-version: 3.9
           activate-environment: causality
           environment-file: environment.yml
