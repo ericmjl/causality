@@ -35,6 +35,7 @@ jobs:
         run: |
           conda activate causality
           python -m ipykernel install --user --name causality
+          pip install -e src/.
           mkdocs build
 
       - name: Deploy website
