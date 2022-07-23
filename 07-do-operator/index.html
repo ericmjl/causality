@@ -1,0 +1,3485 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ericmjl.github.io/causality/07-do-operator/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.1.3">
+    
+    
+      
+        <title>07: The Do Operator - causality</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.edf004c2.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/nb_mods.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-do-operator-and-bayesian-models" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="causality" class="md-header__button md-logo" aria-label="causality" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            causality
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              07: The Do Operator
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="causality" class="md-nav__button md-logo" aria-label="causality" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"/></svg>
+
+    </a>
+    causality
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          causality
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="causality" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          causality
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Notebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notebooks" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Notebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-causality-linear-simulation/" class="md-nav__link">
+        01: Linear Simulation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-instrument-variables/" class="md-nav__link">
+        02: Instrument Variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-d-separation/" class="md-nav__link">
+        03: d-Separation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-finding-confounding-set/" class="md-nav__link">
+        04: Finding Confounding Set
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-collider-effect/" class="md-nav__link">
+        05: Collider Effect
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-causality-identifiability/" class="md-nav__link">
+        06: Causal Identifiability
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          07: The Do Operator
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        07: The Do Operator
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#causal-models-and-bayesian-models-in-brief" class="md-nav__link">
+    Causal models and Bayesian models, in brief
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#causal-inference-vs-bayesian-inference-in-brief" class="md-nav__link">
+    Causal inference vs Bayesian inference, in brief
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structures-in-graphics-and-in-equations" class="md-nav__link">
+    Structures: in graphics and in equations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restating-the-distinction" class="md-nav__link">
+    Restating the distinction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-do-operator" class="md-nav__link">
+    The do-operator
+  </a>
+  
+    <nav class="md-nav" aria-label="The do-operator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-do-operator-local-counterfactuals" class="md-nav__link">
+    The do-operator: local counterfactuals
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-with-pymc" class="md-nav__link">
+    Implementation with PyMC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-inference" class="md-nav__link">
+    Parameter inference
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personalized-counterfactuals-in-pymc" class="md-nav__link">
+    Personalized counterfactuals in PyMC
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-do-operator-global-counterfactuals" class="md-nav__link">
+    The do-operator: global counterfactuals
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-do-operator-combining-global-and-personalized-counterfactuals" class="md-nav__link">
+    The do-operator: combining global and personalized counterfactuals
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#framework" class="md-nav__link">
+    Framework
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#causal-models-and-bayesian-models-in-brief" class="md-nav__link">
+    Causal models and Bayesian models, in brief
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#causal-inference-vs-bayesian-inference-in-brief" class="md-nav__link">
+    Causal inference vs Bayesian inference, in brief
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structures-in-graphics-and-in-equations" class="md-nav__link">
+    Structures: in graphics and in equations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restating-the-distinction" class="md-nav__link">
+    Restating the distinction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-do-operator" class="md-nav__link">
+    The do-operator
+  </a>
+  
+    <nav class="md-nav" aria-label="The do-operator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-do-operator-local-counterfactuals" class="md-nav__link">
+    The do-operator: local counterfactuals
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-with-pymc" class="md-nav__link">
+    Implementation with PyMC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-inference" class="md-nav__link">
+    Parameter inference
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personalized-counterfactuals-in-pymc" class="md-nav__link">
+    Personalized counterfactuals in PyMC
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-do-operator-global-counterfactuals" class="md-nav__link">
+    The do-operator: global counterfactuals
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-do-operator-combining-global-and-personalized-counterfactuals" class="md-nav__link">
+    The do-operator: combining global and personalized counterfactuals
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#framework" class="md-nav__link">
+    Framework
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var requireJsScript = document.createElement('script');
+    requireJsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js';
+
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var jupyterWidgetsScript = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    jupyterWidgetsScript.src = widgetRendererSrc;
+
+    document.body.appendChild(requireJsScript);
+    document.body.appendChild(jupyterWidgetsScript);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://mybinder.org/v2/gh//master?urlpath=lab%2Ftree%2Fdocs%2F07-do-operator.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="the-do-operator-and-bayesian-models">The Do-Operator and Bayesian Models</h1>
+<p>The do-operator is a foundational idea in causal methods,
+used to express, in precise mathematical language,
+what counterfactual interventions would look like.
+The do-operator from causal inference has a tight connection to probabilistic modelling.
+But what exactly is that connection?</p>
+<p>Having myself been previously confused about the link between graphical models,
+causal structure, and more,
+here's my current understanding of the connection.
+What I hope you'll see here is that the do-operator
+gives us the ability to simulate what an experiment might look like...
+without actually doing the experiment,
+and that at its implementation core,
+it ends up being nothing more than "set this thing to a particular value".
+If you're curious now, it's time to read on :).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="causal-models-and-bayesian-models-in-brief">Causal models and Bayesian models, in brief</h2>
+<p>Let’s start first with a brief overview of the connection between 
+causal models and Bayesian models. 
+In doing <a href="https://github.com/ericmjl/causality">my own study on causality</a>, 
+it soon became clear to me that causal models 
+can be read off from mathematical equations quite easily. 
+For a moment, let's assume we have the following set of equations 
+that we presume to describe some data that we observe:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="arithmatex">
+<div class="MathJax_Preview">b = \delta d + \epsilon e + \sigma_b</div>
+<script type="math/tex; mode=display">b = \delta d + \epsilon e + \sigma_b</script>
+</div>
+<p>and </p>
+<div class="arithmatex">
+<div class="MathJax_Preview">a = \beta b + \gamma c + \sigma_a</div>
+<script type="math/tex; mode=display">a = \beta b + \gamma c + \sigma_a</script>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>My convention here is that the English letters represent data, 
+while the Greek letters represent parameters of the model.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To make this abstract example a bit more concrete,
+let's connect these equations to something in real life,
+such as scholastic achievement.
+In this highly contrived and fictitious example,
+let's say that <span class="arithmatex"><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span> is the scholastic achievement of a student 
+as measured by the sum total of subject scores
+across 11 subjects in the O-level examinations 
+administered by the University of Cambridge,
+and it is thought to be a function of:</p>
+<ul>
+<li><span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>, the intelligence quotient (IQ) of the student,</li>
+<li><span class="arithmatex"><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>, the cost of a student's tuition fees in thousands of dollars (private vs. public school), and</li>
+<li><span class="arithmatex"><span class="MathJax_Preview">\sigma_a</span><script type="math/tex">\sigma_a</script></span>, the intrinsic variation in student performance as a whole</li>
+</ul>
+<p>For the term <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>, we think it is a function of:</p>
+<ul>
+<li><span class="arithmatex"><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>, the crime rate of their neighborhood, </li>
+<li><span class="arithmatex"><span class="MathJax_Preview">e</span><script type="math/tex">e</script></span>, the household income of that student, in thousands of dollars, and</li>
+<li><span class="arithmatex"><span class="MathJax_Preview">\sigma_b</span><script type="math/tex">\sigma_b</script></span>, the intrinsic variation in IQ.</li>
+</ul>
+<p>The astute reader will immediately see the controversy in this example.
+The causal path we assume here isn't going to be the only plausible model,
+and there are many, many variables we're leaving out here.
+However, I'd ask that you let your mind suspend the controversy for a moment;
+it's always a big brain teaser to try to come up with plausible but fictitious examples.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>To read off the causal model from this set of equations, 
+everything on the right is causal for the stuff on the left.</strong>
+By those equations, 
+we state that the values of <span class="arithmatex"><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span> that we observe 
+are caused by values of <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> and <span class="arithmatex"><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> and their Greek coefficients <span class="arithmatex"><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span> and <span class="arithmatex"><span class="MathJax_Preview">\gamma</span><script type="math/tex">\gamma</script></span>
+plus some noise <span class="arithmatex"><span class="MathJax_Preview">\sigma_a</span><script type="math/tex">\sigma_a</script></span>,
+while the values of <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> that we observe 
+are caused by the values of <span class="arithmatex"><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span> and <span class="arithmatex"><span class="MathJax_Preview">e</span><script type="math/tex">e</script></span> and their Greek coefficients <span class="arithmatex"><span class="MathJax_Preview">\delta</span><script type="math/tex">\delta</script></span> and <span class="arithmatex"><span class="MathJax_Preview">\epsilon</span><script type="math/tex">\epsilon</script></span>
+plus some noise <span class="arithmatex"><span class="MathJax_Preview">\sigma_b</span><script type="math/tex">\sigma_b</script></span>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>With Bayesian inference on this model, 
+our task here is to estimate the coefficients</strong>, 
+<span class="arithmatex"><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>, <span class="arithmatex"><span class="MathJax_Preview">\gamma</span><script type="math/tex">\gamma</script></span>, <span class="arithmatex"><span class="MathJax_Preview">\delta</span><script type="math/tex">\delta</script></span>, and <span class="arithmatex"><span class="MathJax_Preview">\epsilon</span><script type="math/tex">\epsilon</script></span>. 
+More precisely, we are interested in estimating their expected value and uncertainty. </p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to express the model in such a way that reflects its probabilistic in nature, 
+we need some syntax to express the idea that 
+because <span class="arithmatex"><span class="MathJax_Preview">\delta</span><script type="math/tex">\delta</script></span>, <span class="arithmatex"><span class="MathJax_Preview">\epsilon</span><script type="math/tex">\epsilon</script></span> and <span class="arithmatex"><span class="MathJax_Preview">\sigma_b</span><script type="math/tex">\sigma_b</script></span> are uncertain 
+and are modelled by a probability distribution, 
+therefore <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> is uncertain and has a corresponding probability distribution too. </p>
+<p>At the same time, 
+we need an analogous syntax to express that
+because <span class="arithmatex"><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>, <span class="arithmatex"><span class="MathJax_Preview">\gamma</span><script type="math/tex">\gamma</script></span>, and <span class="arithmatex"><span class="MathJax_Preview">\sigma_a</span><script type="math/tex">\sigma_a</script></span> are uncertain
+and are modelled by a probability distribution,
+therefore <span class="arithmatex"><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span> is also uncertain and has a corresponding probability distribution too. </p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Moreover, if we assume that <span class="arithmatex"><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>, <span class="arithmatex"><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>, <span class="arithmatex"><span class="MathJax_Preview">e</span><script type="math/tex">e</script></span> are stochastic 
+because they are drawn from a distribution, 
+then we have ~~a classic case where everything is unknown and we can’t do anything~~ 
+an awesome modelling problem at hand! 🙂 
+In any case, for the first equation, 
+our expression for the distribution of <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> 
+conditioned on everything on the right would look something like:</p>
+<div class="arithmatex">
+<div class="MathJax_Preview">P(b | \delta, \epsilon, \sigma_b, d, e)</div>
+<script type="math/tex; mode=display">P(b | \delta, \epsilon, \sigma_b, d, e)</script>
+</div>
+<p>And likewise, the distribution of <span class="arithmatex"><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span> conditioned on everything on the right would look something like this:</p>
+<div class="arithmatex">
+<div class="MathJax_Preview">P(a | \beta, \gamma, \sigma_a, b, c)</div>
+<script type="math/tex; mode=display">P(a | \beta, \gamma, \sigma_a, b, c)</script>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, in Bayesian inference, 
+we usually regard <span class="arithmatex"><span class="MathJax_Preview">(b, c, d, e)</span><script type="math/tex">(b, c, d, e)</script></span> as being fixed (and hence sacred), 
+because they are the <em>data that we have observed.</em> 
+By convention, in many probabilistic modelling problems, 
+we’re not really concerned about the data generating processes for <span class="arithmatex"><span class="MathJax_Preview">(b, c, d, e)</span><script type="math/tex">(b, c, d, e)</script></span> 
+because they aren’t usually the sample-invariant, 
+intrinsic parameter of a system we’re interested in,
+unlike the Greek-letter symbols which take on their values
+independent of any given measured sample.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="causal-inference-vs-bayesian-inference-in-brief">Causal inference vs Bayesian inference, in brief</h2>
+<p>I’d now like to address “causal inference” vs. “bayesian inference”; I think the use of a contrast is going to be helpful here.</p>
+<p>Bayesian inference asks the question, “given the observed data and a presumed model with parameters, what is the expectation and uncertainty in the parameters that could have generated the observed data?”</p>
+<p>Causal inference asks the question, “given the observed data, what are plausible structures of the model that could have generated the observed data?”</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="structures-in-graphics-and-in-equations">Structures: in graphics and in equations</h2>
+<p>By structures, we’re really asking about the relationships between variables. 
+Using the above example again, 
+if <span class="arithmatex"><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span> is caused by <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> and <span class="arithmatex"><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>, 
+then in abstract, we'd write that <span class="arithmatex"><span class="MathJax_Preview">a = f(b, c)</span><script type="math/tex">a = f(b, c)</script></span>. 
+We would then draw the following diagram to express the relationship:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">config</span> <span class="n">InlineBackend</span><span class="o">.</span><span class="n">figure_format</span><span class="o">=</span><span class="s1">&#39;retina&#39;</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">daft</span>
+
+<span class="n">scale</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">pgm</span> <span class="o">=</span> <span class="n">daft</span><span class="o">.</span><span class="n">PGM</span><span class="p">()</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$a$&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$b$&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$c$&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">a_color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ec&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">}</span>
+
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">a_color</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">a_color</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">render</span><span class="p">();</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_14_0.png"
+width=110
+height=110
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Likewise, since we presume that <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> is caused by <span class="arithmatex"><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span> and <span class="arithmatex"><span class="MathJax_Preview">e</span><script type="math/tex">e</script></span>, 
+then the functional form of the causal relationship will be <span class="arithmatex"><span class="MathJax_Preview">b = g(d, e)</span><script type="math/tex">b = g(d, e)</script></span>. 
+We would then draw the following diagram to express the relationship:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">pgm</span> <span class="o">=</span> <span class="n">daft</span><span class="o">.</span><span class="n">PGM</span><span class="p">()</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$b$&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$d$&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$e$&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">b_color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ec&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">}</span>
+
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">b_color</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">b_color</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">render</span><span class="p">();</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_16_0.png"
+width=110
+height=110
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And taken together, the full model would look like:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">pgm</span> <span class="o">=</span> <span class="n">daft</span><span class="o">.</span><span class="n">PGM</span><span class="p">()</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$a$&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$b$&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$c$&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$d$&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$e$&quot;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">a_color</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">a_color</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">b_color</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">plot_params</span><span class="o">=</span><span class="n">b_color</span><span class="p">)</span>
+
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$a = f(b, c) = \beta b + \gamma c + \sigma_a$&quot;</span><span class="p">)</span>
+<span class="n">pgm</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$b = f(d, e) = \delta d + \epsilon e + \sigma_b$&quot;</span><span class="p">)</span>
+
+<span class="n">pgm</span><span class="o">.</span><span class="n">render</span><span class="p">();</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_18_0.png"
+width=267
+height=167
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In economics, the term “structural equation models” 
+refers to the system of equations 
+that form the econometric model that economists build. 
+Usually, those models are linear in nature. 
+On occasion, though, additional functional forms might be used 
+(sigmoidal, piecewise linear, neural network, etc.), 
+if they help model the phenomena at hand. 
+Whatever the form of the equation gets encapsulated into <span class="arithmatex"><span class="MathJax_Preview">f(v_1, v_2, ..., v_n)</span><script type="math/tex">f(v_1, v_2, ..., v_n)</script></span>,
+where <span class="arithmatex"><span class="MathJax_Preview">v_1... v_n</span><script type="math/tex">v_1... v_n</script></span> refer to the variables like <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> and <span class="arithmatex"><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> above.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Structure, then, can refer to both the graphical structure of the model 
+and the particular form of equations. 
+As far as I have seen, 
+most causal models assume some kind of linear equation between variables, 
+though there are exceptions; 
+in addition, causal inference, as taught, 
+is usually concerned with inferring the <em>graphical</em> relationship between variables, 
+presuming some linear form underneath. 
+Inferring the model structure is what we call "model inference".</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><em>A note for deep learners: this is what model inference actually is: 
+inferring the structure of a model. 
+More generally, if you think about linguistic convention, 
+“X inference” usually refers to the tools and processes used in inferring X. 
+Calling model inference the forward pass through the model breaks linguistic convention, 
+and hence introduces viscosity in communication with others 
+who adopt said linguistic convention!</em></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="restating-the-distinction">Restating the distinction</h2>
+<p>At this point, I think it's an appropriate moment to try to re-state clearly
+what the relationship between a "causal inference" and a "Bayesian inference" is.
+They are <strong>both</strong> concerned with the system of equations that make up our model.
+However, in causal inference, 
+we are primarily concerned with the relationship between observed variables, 
+expressed as math equations.
+In Bayesian inference, we are primarily concerned with the parameters of those equations
+and their uncertainty.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="the-do-operator">The do-operator</h2>
+<p>Finally, we reach the point where we can touch the do-operator!
+This is such a key and crucial idea to causal methods,
+as it allows us to do <strong>counterfactual</strong> arguments conditioned on a presumed model.
+To illustrate what we mean by the do-operator,
+I'm going to rely on code, prose, and equations together.
+To start, let's implement the full probabilistic model above in Python code.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Equations</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">30</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">variance</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">sigma_a_dist</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">variance</span><span class="p">)</span>
+<span class="n">sigma_b_dist</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">variance</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">a_equation</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="n">sigma_a_dist</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">b_equation</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">d</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">e</span> <span class="o">+</span> <span class="n">sigma_b_dist</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To generate the data, we always begin with the nodes
+that have no parental nodes.
+In more complicated networks, 
+we would leverage tools from network science, in this case, the <em>topological sort</em>,
+to identify the exact order in which we need to simulate observations.
+The observed data that we would end up collecting 
+for this system looks like the following:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">N</span> <span class="o">=</span> <span class="mi">1_000</span>
+<span class="n">cc</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">dd</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">ee</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">bb</span> <span class="o">=</span> <span class="n">b_equation</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">ee</span><span class="p">)</span>
+<span class="n">aa</span> <span class="o">=</span> <span class="n">a_equation</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">aa</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">bb</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">cc</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">dd</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">ee</span><span class="p">})</span>
+<span class="n">data</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="scoped">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+<tbody>
+    <tr>
+      <th>0</th>
+      <td>1332.524476</td>
+      <td>131.382376</td>
+      <td>45.992774</td>
+      <td>-4.197128</td>
+      <td>31.860586</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1373.132363</td>
+      <td>135.853147</td>
+      <td>43.887472</td>
+      <td>-4.164023</td>
+      <td>32.290897</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1033.826746</td>
+      <td>101.218672</td>
+      <td>55.824587</td>
+      <td>-3.365145</td>
+      <td>25.216640</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1480.752450</td>
+      <td>145.540974</td>
+      <td>49.372440</td>
+      <td>-4.589399</td>
+      <td>30.235521</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1225.837710</td>
+      <td>120.624314</td>
+      <td>55.124833</td>
+      <td>-3.947604</td>
+      <td>28.537981</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>995</th>
+      <td>1122.058675</td>
+      <td>112.318435</td>
+      <td>60.624883</td>
+      <td>-3.741055</td>
+      <td>23.348008</td>
+    </tr>
+    <tr>
+      <th>996</th>
+      <td>1271.828168</td>
+      <td>125.174992</td>
+      <td>38.599911</td>
+      <td>-3.998114</td>
+      <td>34.322930</td>
+    </tr>
+    <tr>
+      <th>997</th>
+      <td>936.356486</td>
+      <td>92.982304</td>
+      <td>45.385036</td>
+      <td>-3.185750</td>
+      <td>33.214713</td>
+    </tr>
+    <tr>
+      <th>998</th>
+      <td>1374.611126</td>
+      <td>134.746760</td>
+      <td>52.968263</td>
+      <td>-4.105797</td>
+      <td>17.916180</td>
+    </tr>
+    <tr>
+      <th>999</th>
+      <td>586.475070</td>
+      <td>58.313092</td>
+      <td>59.919246</td>
+      <td>-2.475159</td>
+      <td>27.182244</td>
+    </tr>
+  </tbody>
+</table>
+<p>1000 rows × 5 columns</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And if we were to visualize the marginal distribution of each of the variables:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">aa</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">cc</span><span class="p">,</span> <span class="n">dd</span><span class="p">,</span> <span class="n">ee</span><span class="p">],</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_29_0.png"
+width=1072
+height=208
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, plotting the joint distributions, we get:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
+
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>&lt;seaborn.axisgrid.PairGrid at 0x7f14016cc340&gt;</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_31_1.png"
+width=885
+height=885
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we have a feel for what kind of data we'll collect,
+let's explore the three ways that the do-operator can be used.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="the-do-operator-local-counterfactuals">The do-operator: local counterfactuals</h3>
+<p>At an elementary level, the do-operator expresses mathematically the following quesiton,
+“For a given sample, what if one of its variables took on a different value?” 
+You can think of this as a "personalized" counterfactual for a given sample,
+whether that sample is a patient, student, employee, citizen, or some other thing.</p>
+<p>Some concrete examples of this in action are:</p>
+<ol>
+<li>“For this given patient, what if the treatment given was the alternative treatment?”</li>
+<li>“For this given student, what if they came from a wealthier household?”</li>
+<li>“For this given tennis player, what if the court they played on were grass instead of clay?”</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, one of the questions we’re asking when asking counterfactuals 
+are in fact <em>personalized</em> for a given sample.</p>
+<p>If we go back to the structural equations above, 
+we could isolate a given observational data point <span class="arithmatex"><span class="MathJax_Preview">(a, b, c)</span><script type="math/tex">(a, b, c)</script></span> and then ask the question, 
+“What if in row <span class="arithmatex"><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>, <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> took on a certain value <span class="arithmatex"><span class="MathJax_Preview">B</span><script type="math/tex">B</script></span> instead of <span class="arithmatex"><span class="MathJax_Preview">b_i</span><script type="math/tex">b_i</script></span>?” 
+This question, when asked, results in our probabilistic structure changing a bit:</p>
+<ol>
+<li>We are now asking for <span class="arithmatex"><span class="MathJax_Preview">P(a_i | do(b_i=B), \beta, \gamma, c_i)</span><script type="math/tex">P(a_i | do(b_i=B), \beta, \gamma, c_i)</script></span>, where <span class="arithmatex"><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span> refers to the particular sample index.</li>
+<li>Our counterfactual question presumes a known value of <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>, and hence no longer requires us to generate it from <span class="arithmatex"><span class="MathJax_Preview">(d, e)</span><script type="math/tex">(d, e)</script></span>. We can effectively cut <span class="arithmatex"><span class="MathJax_Preview">(d, e)</span><script type="math/tex">(d, e)</script></span> out of the picture.</li>
+</ol>
+<p>As long as we preserve uncertainty in the parameter values, 
+we can obtain counterfactual uncertainty as well.
+To illustrate how we do personalized counterfactuals in a Bayesian setting,
+let's see how to do it with PyMC.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="implementation-with-pymc">Implementation with PyMC</h3>
+<p>We're going to start first by implementing the models.
+There's no do-operations happening just yet,
+we're just writing down the equations in PyMC first.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We first implement the set of equations.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model_a</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">])</span>
+    <span class="c1"># Priors for model parameters</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">sigma_a</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma_a&quot;</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;like&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">beta</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_a</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model_b</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">])</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">])</span>
+    <span class="c1"># Priors for model parameters</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=-</span><span class="mi">15</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">sigma_b</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma_b&quot;</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;like&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">delta</span> <span class="o">*</span> <span class="n">d</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">e</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_b</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model_joint</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">])</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">])</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">])</span>
+    <span class="c1"># Priors for model parameters</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=-</span><span class="mi">15</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">sigma_b</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma_b&quot;</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;like_b&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">delta</span> <span class="o">*</span> <span class="n">d</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">e</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_b</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+    <span class="c1"># Priors for model parameters</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">sigma_a</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma_a&quot;</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;like_a&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">beta</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_a</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>/usr/share/miniconda3/envs/causality/lib/python3.9/site-packages/pymc/data.py:667: FutureWarning: The `mutable` kwarg was not specified. Currently it defaults to `pm.Data(mutable=True)`, which is equivalent to using `pm.MutableData()`. In v4.1.0 the default will change to `pm.Data(mutable=False)`, equivalent to `pm.ConstantData`. Set `pm.Data(..., mutable=False/True)`, or use `pm.ConstantData`/`pm.MutableData`.
+  warnings.warn(
+/usr/share/miniconda3/envs/causality/lib/python3.9/site-packages/pymc/data.py:667: FutureWarning: The `mutable` kwarg was not specified. Currently it defaults to `pm.Data(mutable=True)`, which is equivalent to using `pm.MutableData()`. In v4.1.0 the default will change to `pm.Data(mutable=False)`, equivalent to `pm.ConstantData`. Set `pm.Data(..., mutable=False/True)`, or use `pm.ConstantData`/`pm.MutableData`.
+  warnings.warn(
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's now plot the graphical model provided by PyMC.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">model_a</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_svg output_subarea output_execute_result">
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+
+
+<!-- Generated by graphviz version 3.0.0 (20220315.2325)
+ -->
+
+
+
+<!-- Pages: 1 -->
+
+
+<svg width="658pt" height="327pt"
+ viewBox="0.00 0.00 658.50 326.93" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 322.93)">
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-322.93 654.5,-322.93 654.5,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster1000</title>
+<path fill="none" stroke="black" d="M20,-8C20,-8 250,-8 250,-8 256,-8 262,-14 262,-20 262,-20 262,-298.93 262,-298.93 262,-304.93 256,-310.93 250,-310.93 250,-310.93 20,-310.93 20,-310.93 14,-310.93 8,-304.93 8,-298.93 8,-298.93 8,-20 8,-20 8,-14 14,-8 20,-8"/>
+<text text-anchor="middle" x="235.5" y="-15.8" font-family="Times,serif" font-size="14.00">1000</text>
+</g>
+
+<!-- c -->
+
+
+<g id="node1" class="node">
+<title>c</title>
+<path fill="lightgrey" stroke="black" d="M242,-302.93C242,-302.93 156,-302.93 156,-302.93 150,-302.93 144,-296.93 144,-290.93 144,-290.93 144,-261.93 144,-261.93 144,-255.93 150,-249.93 156,-249.93 156,-249.93 242,-249.93 242,-249.93 248,-249.93 254,-255.93 254,-261.93 254,-261.93 254,-290.93 254,-290.93 254,-296.93 248,-302.93 242,-302.93"/>
+<text text-anchor="middle" x="199" y="-287.73" font-family="Times,serif" font-size="14.00">c</text>
+<text text-anchor="middle" x="199" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="199" y="-257.73" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- like -->
+
+
+<g id="node2" class="node">
+<title>like</title>
+<ellipse fill="lightgrey" stroke="black" cx="202" cy="-165.48" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="202" y="-176.78" font-family="Times,serif" font-size="14.00">like</text>
+<text text-anchor="middle" x="202" y="-161.78" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="202" y="-146.78" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- c&#45;&gt;like -->
+
+
+<g id="edge6" class="edge">
+<title>c&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M199.7,-249.89C200,-238.98 200.36,-225.89 200.71,-213.35"/>
+<polygon fill="black" stroke="black" points="204.22,-213.09 200.99,-203 197.22,-212.9 204.22,-213.09"/>
+</g>
+
+<!-- a -->
+
+
+<g id="node4" class="node">
+<title>a</title>
+<path fill="lightgrey" stroke="black" d="M242,-92C242,-92 156,-92 156,-92 150,-92 144,-86 144,-80 144,-80 144,-51 144,-51 144,-45 150,-39 156,-39 156,-39 242,-39 242,-39 248,-39 254,-45 254,-51 254,-51 254,-80 254,-80 254,-86 248,-92 242,-92"/>
+<text text-anchor="middle" x="199" y="-76.8" font-family="Times,serif" font-size="14.00">a</text>
+<text text-anchor="middle" x="199" y="-61.8" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="199" y="-46.8" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- like&#45;&gt;a -->
+
+
+<g id="edge1" class="edge">
+<title>like&#45;&gt;a</title>
+<path fill="none" stroke="black" d="M200.88,-127.99C200.63,-119.58 200.35,-110.63 200.09,-102.25"/>
+<polygon fill="black" stroke="black" points="203.59,-101.9 199.78,-92.01 196.59,-102.11 203.59,-101.9"/>
+</g>
+
+<!-- b -->
+
+
+<g id="node3" class="node">
+<title>b</title>
+<path fill="lightgrey" stroke="black" d="M114,-302.93C114,-302.93 28,-302.93 28,-302.93 22,-302.93 16,-296.93 16,-290.93 16,-290.93 16,-261.93 16,-261.93 16,-255.93 22,-249.93 28,-249.93 28,-249.93 114,-249.93 114,-249.93 120,-249.93 126,-255.93 126,-261.93 126,-261.93 126,-290.93 126,-290.93 126,-296.93 120,-302.93 114,-302.93"/>
+<text text-anchor="middle" x="71" y="-287.73" font-family="Times,serif" font-size="14.00">b</text>
+<text text-anchor="middle" x="71" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="71" y="-257.73" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- b&#45;&gt;like -->
+
+
+<g id="edge4" class="edge">
+<title>b&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M101.71,-249.89C119.53,-235.07 142.18,-216.23 161.44,-200.21"/>
+<polygon fill="black" stroke="black" points="163.74,-202.85 169.19,-193.77 159.26,-197.47 163.74,-202.85"/>
+</g>
+
+<!-- beta -->
+
+
+<g id="node5" class="node">
+<title>beta</title>
+<ellipse fill="none" stroke="black" cx="321" cy="-276.43" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="321" y="-287.73" font-family="Times,serif" font-size="14.00">beta</text>
+<text text-anchor="middle" x="321" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="321" y="-257.73" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- beta&#45;&gt;like -->
+
+
+<g id="edge3" class="edge">
+<title>beta&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M290.04,-247.09C275.01,-233.33 256.8,-216.65 240.84,-202.04"/>
+<polygon fill="black" stroke="black" points="242.95,-199.23 233.21,-195.06 238.23,-204.39 242.95,-199.23"/>
+</g>
+
+<!-- sigma_a -->
+
+
+<g id="node6" class="node">
+<title>sigma_a</title>
+<ellipse fill="none" stroke="black" cx="461" cy="-276.43" rx="72.25" ry="37.45"/>
+<text text-anchor="middle" x="461" y="-287.73" font-family="Times,serif" font-size="14.00">sigma_a</text>
+<text text-anchor="middle" x="461" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="461" y="-257.73" font-family="Times,serif" font-size="14.00">Exponential</text>
+</g>
+
+<!-- sigma_a&#45;&gt;like -->
+
+
+<g id="edge2" class="edge">
+<title>sigma_a&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M407.29,-251.26C397.88,-247.11 388.17,-242.87 379,-238.95 337.55,-221.25 290.29,-201.95 255.04,-187.71"/>
+<polygon fill="black" stroke="black" points="256.01,-184.33 245.43,-183.84 253.4,-190.82 256.01,-184.33"/>
+</g>
+
+<!-- gamma -->
+
+
+<g id="node7" class="node">
+<title>gamma</title>
+<ellipse fill="none" stroke="black" cx="601" cy="-276.43" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="601" y="-287.73" font-family="Times,serif" font-size="14.00">gamma</text>
+<text text-anchor="middle" x="601" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="601" y="-257.73" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- gamma&#45;&gt;like -->
+
+
+<g id="edge5" class="edge">
+<title>gamma&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M564.89,-250.43C557.55,-246.13 549.71,-242.05 542,-238.95 447.84,-201.14 330.72,-181.73 261.4,-172.87"/>
+<polygon fill="black" stroke="black" points="261.47,-169.35 251.12,-171.58 260.61,-176.3 261.47,-169.35"/>
+</g>
+</g>
+</svg>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this model, we see that <span class="arithmatex"><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>, <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>, and <span class="arithmatex"><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> are all observed data,
+nested within the plate representing 1,000 data points.
+<span class="arithmatex"><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>, <span class="arithmatex"><span class="MathJax_Preview">\gamma</span><script type="math/tex">\gamma</script></span>, and <span class="arithmatex"><span class="MathJax_Preview">\sigma_a</span><script type="math/tex">\sigma_a</script></span> are the parameters of the model
+that are invariant to any particular data point
+and hence are located outside of the plate.
+Those are our system-level parameters.
+An analogous diagram exists for <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>'s model as well:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">model_b</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_svg output_subarea output_execute_result">
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+
+
+<!-- Generated by graphviz version 3.0.0 (20220315.2325)
+ -->
+
+
+
+<!-- Pages: 1 -->
+
+
+<svg width="658pt" height="327pt"
+ viewBox="0.00 0.00 658.50 326.93" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 322.93)">
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-322.93 654.5,-322.93 654.5,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster1000</title>
+<path fill="none" stroke="black" d="M20,-8C20,-8 250,-8 250,-8 256,-8 262,-14 262,-20 262,-20 262,-298.93 262,-298.93 262,-304.93 256,-310.93 250,-310.93 250,-310.93 20,-310.93 20,-310.93 14,-310.93 8,-304.93 8,-298.93 8,-298.93 8,-20 8,-20 8,-14 14,-8 20,-8"/>
+<text text-anchor="middle" x="235.5" y="-15.8" font-family="Times,serif" font-size="14.00">1000</text>
+</g>
+
+<!-- d -->
+
+
+<g id="node1" class="node">
+<title>d</title>
+<path fill="lightgrey" stroke="black" d="M242,-302.93C242,-302.93 156,-302.93 156,-302.93 150,-302.93 144,-296.93 144,-290.93 144,-290.93 144,-261.93 144,-261.93 144,-255.93 150,-249.93 156,-249.93 156,-249.93 242,-249.93 242,-249.93 248,-249.93 254,-255.93 254,-261.93 254,-261.93 254,-290.93 254,-290.93 254,-296.93 248,-302.93 242,-302.93"/>
+<text text-anchor="middle" x="199" y="-287.73" font-family="Times,serif" font-size="14.00">d</text>
+<text text-anchor="middle" x="199" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="199" y="-257.73" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- like -->
+
+
+<g id="node2" class="node">
+<title>like</title>
+<ellipse fill="lightgrey" stroke="black" cx="202" cy="-165.48" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="202" y="-176.78" font-family="Times,serif" font-size="14.00">like</text>
+<text text-anchor="middle" x="202" y="-161.78" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="202" y="-146.78" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- d&#45;&gt;like -->
+
+
+<g id="edge5" class="edge">
+<title>d&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M199.7,-249.89C200,-238.98 200.36,-225.89 200.71,-213.35"/>
+<polygon fill="black" stroke="black" points="204.22,-213.09 200.99,-203 197.22,-212.9 204.22,-213.09"/>
+</g>
+
+<!-- b -->
+
+
+<g id="node3" class="node">
+<title>b</title>
+<path fill="lightgrey" stroke="black" d="M242,-92C242,-92 156,-92 156,-92 150,-92 144,-86 144,-80 144,-80 144,-51 144,-51 144,-45 150,-39 156,-39 156,-39 242,-39 242,-39 248,-39 254,-45 254,-51 254,-51 254,-80 254,-80 254,-86 248,-92 242,-92"/>
+<text text-anchor="middle" x="199" y="-76.8" font-family="Times,serif" font-size="14.00">b</text>
+<text text-anchor="middle" x="199" y="-61.8" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="199" y="-46.8" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- like&#45;&gt;b -->
+
+
+<g id="edge1" class="edge">
+<title>like&#45;&gt;b</title>
+<path fill="none" stroke="black" d="M200.88,-127.99C200.63,-119.58 200.35,-110.63 200.09,-102.25"/>
+<polygon fill="black" stroke="black" points="203.59,-101.9 199.78,-92.01 196.59,-102.11 203.59,-101.9"/>
+</g>
+
+<!-- e -->
+
+
+<g id="node4" class="node">
+<title>e</title>
+<path fill="lightgrey" stroke="black" d="M114,-302.93C114,-302.93 28,-302.93 28,-302.93 22,-302.93 16,-296.93 16,-290.93 16,-290.93 16,-261.93 16,-261.93 16,-255.93 22,-249.93 28,-249.93 28,-249.93 114,-249.93 114,-249.93 120,-249.93 126,-255.93 126,-261.93 126,-261.93 126,-290.93 126,-290.93 126,-296.93 120,-302.93 114,-302.93"/>
+<text text-anchor="middle" x="71" y="-287.73" font-family="Times,serif" font-size="14.00">e</text>
+<text text-anchor="middle" x="71" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="71" y="-257.73" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- e&#45;&gt;like -->
+
+
+<g id="edge4" class="edge">
+<title>e&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M101.71,-249.89C119.53,-235.07 142.18,-216.23 161.44,-200.21"/>
+<polygon fill="black" stroke="black" points="163.74,-202.85 169.19,-193.77 159.26,-197.47 163.74,-202.85"/>
+</g>
+
+<!-- epsilon -->
+
+
+<g id="node5" class="node">
+<title>epsilon</title>
+<ellipse fill="none" stroke="black" cx="321" cy="-276.43" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="321" y="-287.73" font-family="Times,serif" font-size="14.00">epsilon</text>
+<text text-anchor="middle" x="321" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="321" y="-257.73" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- epsilon&#45;&gt;like -->
+
+
+<g id="edge2" class="edge">
+<title>epsilon&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M290.04,-247.09C275.01,-233.33 256.8,-216.65 240.84,-202.04"/>
+<polygon fill="black" stroke="black" points="242.95,-199.23 233.21,-195.06 238.23,-204.39 242.95,-199.23"/>
+</g>
+
+<!-- sigma_b -->
+
+
+<g id="node6" class="node">
+<title>sigma_b</title>
+<ellipse fill="none" stroke="black" cx="461" cy="-276.43" rx="72.25" ry="37.45"/>
+<text text-anchor="middle" x="461" y="-287.73" font-family="Times,serif" font-size="14.00">sigma_b</text>
+<text text-anchor="middle" x="461" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="461" y="-257.73" font-family="Times,serif" font-size="14.00">Exponential</text>
+</g>
+
+<!-- sigma_b&#45;&gt;like -->
+
+
+<g id="edge6" class="edge">
+<title>sigma_b&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M407.29,-251.26C397.88,-247.11 388.17,-242.87 379,-238.95 337.55,-221.25 290.29,-201.95 255.04,-187.71"/>
+<polygon fill="black" stroke="black" points="256.01,-184.33 245.43,-183.84 253.4,-190.82 256.01,-184.33"/>
+</g>
+
+<!-- delta -->
+
+
+<g id="node7" class="node">
+<title>delta</title>
+<ellipse fill="none" stroke="black" cx="601" cy="-276.43" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="601" y="-287.73" font-family="Times,serif" font-size="14.00">delta</text>
+<text text-anchor="middle" x="601" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="601" y="-257.73" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- delta&#45;&gt;like -->
+
+
+<g id="edge3" class="edge">
+<title>delta&#45;&gt;like</title>
+<path fill="none" stroke="black" d="M564.89,-250.43C557.55,-246.13 549.71,-242.05 542,-238.95 447.84,-201.14 330.72,-181.73 261.4,-172.87"/>
+<polygon fill="black" stroke="black" points="261.47,-169.35 251.12,-171.58 260.61,-176.3 261.47,-169.35"/>
+</g>
+</g>
+</svg>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">model_joint</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_svg output_subarea output_execute_result">
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+
+
+<!-- Generated by graphviz version 3.0.0 (20220315.2325)
+ -->
+
+
+
+<!-- Pages: 1 -->
+
+
+<svg width="804pt" height="549pt"
+ viewBox="0.00 0.00 804.25 548.84" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 544.84)">
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-544.84 800.25,-544.84 800.25,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster1000</title>
+<path fill="none" stroke="black" d="M166.12,-8C166.12,-8 396.12,-8 396.12,-8 402.12,-8 408.12,-14 408.12,-20 408.12,-20 408.12,-520.84 408.12,-520.84 408.12,-526.84 402.12,-532.84 396.12,-532.84 396.12,-532.84 166.12,-532.84 166.12,-532.84 160.12,-532.84 154.12,-526.84 154.12,-520.84 154.12,-520.84 154.12,-20 154.12,-20 154.12,-14 160.12,-8 166.12,-8"/>
+<text text-anchor="middle" x="381.62" y="-15.8" font-family="Times,serif" font-size="14.00">1000</text>
+</g>
+
+<!-- like_b -->
+
+
+<g id="node1" class="node">
+<title>like_b</title>
+<ellipse fill="lightgrey" stroke="black" cx="348.12" cy="-387.38" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="348.12" y="-398.68" font-family="Times,serif" font-size="14.00">like_b</text>
+<text text-anchor="middle" x="348.12" y="-383.68" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="348.12" y="-368.68" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- b -->
+
+
+<g id="node2" class="node">
+<title>b</title>
+<path fill="lightgrey" stroke="black" d="M388.12,-302.93C388.12,-302.93 302.12,-302.93 302.12,-302.93 296.12,-302.93 290.12,-296.93 290.12,-290.93 290.12,-290.93 290.12,-261.93 290.12,-261.93 290.12,-255.93 296.12,-249.93 302.12,-249.93 302.12,-249.93 388.12,-249.93 388.12,-249.93 394.12,-249.93 400.12,-255.93 400.12,-261.93 400.12,-261.93 400.12,-290.93 400.12,-290.93 400.12,-296.93 394.12,-302.93 388.12,-302.93"/>
+<text text-anchor="middle" x="345.12" y="-287.73" font-family="Times,serif" font-size="14.00">b</text>
+<text text-anchor="middle" x="345.12" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="345.12" y="-257.73" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- like_b&#45;&gt;b -->
+
+
+<g id="edge2" class="edge">
+<title>like_b&#45;&gt;b</title>
+<path fill="none" stroke="black" d="M347.12,-349.8C346.79,-338.06 346.44,-325.08 346.11,-313.38"/>
+<polygon fill="black" stroke="black" points="349.61,-312.98 345.83,-303.08 342.61,-313.17 349.61,-312.98"/>
+</g>
+
+<!-- like_a -->
+
+
+<g id="node7" class="node">
+<title>like_a</title>
+<ellipse fill="lightgrey" stroke="black" cx="345.12" cy="-165.48" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="345.12" y="-176.78" font-family="Times,serif" font-size="14.00">like_a</text>
+<text text-anchor="middle" x="345.12" y="-161.78" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="345.12" y="-146.78" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- b&#45;&gt;like_a -->
+
+
+<g id="edge10" class="edge">
+<title>b&#45;&gt;like_a</title>
+<path fill="none" stroke="black" d="M345.12,-249.89C345.12,-238.98 345.12,-225.89 345.12,-213.35"/>
+<polygon fill="black" stroke="black" points="348.62,-213 345.12,-203 341.62,-213 348.62,-213"/>
+</g>
+
+<!-- e -->
+
+
+<g id="node3" class="node">
+<title>e</title>
+<path fill="lightgrey" stroke="black" d="M388.12,-524.84C388.12,-524.84 302.12,-524.84 302.12,-524.84 296.12,-524.84 290.12,-518.84 290.12,-512.84 290.12,-512.84 290.12,-483.84 290.12,-483.84 290.12,-477.84 296.12,-471.84 302.12,-471.84 302.12,-471.84 388.12,-471.84 388.12,-471.84 394.12,-471.84 400.12,-477.84 400.12,-483.84 400.12,-483.84 400.12,-512.84 400.12,-512.84 400.12,-518.84 394.12,-524.84 388.12,-524.84"/>
+<text text-anchor="middle" x="345.12" y="-509.64" font-family="Times,serif" font-size="14.00">e</text>
+<text text-anchor="middle" x="345.12" y="-494.64" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="345.12" y="-479.64" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- e&#45;&gt;like_b -->
+
+
+<g id="edge5" class="edge">
+<title>e&#45;&gt;like_b</title>
+<path fill="none" stroke="black" d="M345.83,-471.79C346.13,-460.88 346.49,-447.79 346.83,-435.25"/>
+<polygon fill="black" stroke="black" points="350.34,-435 347.12,-424.91 343.35,-434.81 350.34,-435"/>
+</g>
+
+<!-- d -->
+
+
+<g id="node4" class="node">
+<title>d</title>
+<path fill="lightgrey" stroke="black" d="M260.12,-524.84C260.12,-524.84 174.12,-524.84 174.12,-524.84 168.12,-524.84 162.12,-518.84 162.12,-512.84 162.12,-512.84 162.12,-483.84 162.12,-483.84 162.12,-477.84 168.12,-471.84 174.12,-471.84 174.12,-471.84 260.12,-471.84 260.12,-471.84 266.12,-471.84 272.12,-477.84 272.12,-483.84 272.12,-483.84 272.12,-512.84 272.12,-512.84 272.12,-518.84 266.12,-524.84 260.12,-524.84"/>
+<text text-anchor="middle" x="217.12" y="-509.64" font-family="Times,serif" font-size="14.00">d</text>
+<text text-anchor="middle" x="217.12" y="-494.64" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="217.12" y="-479.64" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- d&#45;&gt;like_b -->
+
+
+<g id="edge6" class="edge">
+<title>d&#45;&gt;like_b</title>
+<path fill="none" stroke="black" d="M247.84,-471.79C265.65,-456.98 288.3,-438.14 307.57,-422.12"/>
+<polygon fill="black" stroke="black" points="309.86,-424.76 315.31,-415.67 305.39,-419.38 309.86,-424.76"/>
+</g>
+
+<!-- a -->
+
+
+<g id="node5" class="node">
+<title>a</title>
+<path fill="lightgrey" stroke="black" d="M388.12,-92C388.12,-92 302.12,-92 302.12,-92 296.12,-92 290.12,-86 290.12,-80 290.12,-80 290.12,-51 290.12,-51 290.12,-45 296.12,-39 302.12,-39 302.12,-39 388.12,-39 388.12,-39 394.12,-39 400.12,-45 400.12,-51 400.12,-51 400.12,-80 400.12,-80 400.12,-86 394.12,-92 388.12,-92"/>
+<text text-anchor="middle" x="345.12" y="-76.8" font-family="Times,serif" font-size="14.00">a</text>
+<text text-anchor="middle" x="345.12" y="-61.8" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="345.12" y="-46.8" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- c -->
+
+
+<g id="node6" class="node">
+<title>c</title>
+<path fill="lightgrey" stroke="black" d="M260.12,-302.93C260.12,-302.93 174.12,-302.93 174.12,-302.93 168.12,-302.93 162.12,-296.93 162.12,-290.93 162.12,-290.93 162.12,-261.93 162.12,-261.93 162.12,-255.93 168.12,-249.93 174.12,-249.93 174.12,-249.93 260.12,-249.93 260.12,-249.93 266.12,-249.93 272.12,-255.93 272.12,-261.93 272.12,-261.93 272.12,-290.93 272.12,-290.93 272.12,-296.93 266.12,-302.93 260.12,-302.93"/>
+<text text-anchor="middle" x="217.12" y="-287.73" font-family="Times,serif" font-size="14.00">c</text>
+<text text-anchor="middle" x="217.12" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="217.12" y="-257.73" font-family="Times,serif" font-size="14.00">MutableData</text>
+</g>
+
+<!-- c&#45;&gt;like_a -->
+
+
+<g id="edge12" class="edge">
+<title>c&#45;&gt;like_a</title>
+<path fill="none" stroke="black" d="M247.14,-249.89C264.33,-235.25 286.15,-216.68 304.82,-200.78"/>
+<polygon fill="black" stroke="black" points="307.27,-203.3 312.61,-194.15 302.73,-197.97 307.27,-203.3"/>
+</g>
+
+<!-- like_a&#45;&gt;a -->
+
+
+<g id="edge1" class="edge">
+<title>like_a&#45;&gt;a</title>
+<path fill="none" stroke="black" d="M345.12,-127.99C345.12,-119.58 345.12,-110.63 345.12,-102.25"/>
+<polygon fill="black" stroke="black" points="348.62,-102.01 345.12,-92.01 341.62,-102.01 348.62,-102.01"/>
+</g>
+
+<!-- epsilon -->
+
+
+<g id="node8" class="node">
+<title>epsilon</title>
+<ellipse fill="none" stroke="black" cx="467.12" cy="-498.34" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="467.12" y="-509.64" font-family="Times,serif" font-size="14.00">epsilon</text>
+<text text-anchor="middle" x="467.12" y="-494.64" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="467.12" y="-479.64" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- epsilon&#45;&gt;like_b -->
+
+
+<g id="edge3" class="edge">
+<title>epsilon&#45;&gt;like_b</title>
+<path fill="none" stroke="black" d="M436.17,-468.99C421.14,-455.23 402.92,-438.55 386.97,-423.94"/>
+<polygon fill="black" stroke="black" points="389.08,-421.13 379.34,-416.96 384.35,-426.3 389.08,-421.13"/>
+</g>
+
+<!-- sigma_a -->
+
+
+<g id="node9" class="node">
+<title>sigma_a</title>
+<ellipse fill="none" stroke="black" cx="72.12" cy="-276.43" rx="72.25" ry="37.45"/>
+<text text-anchor="middle" x="72.12" y="-287.73" font-family="Times,serif" font-size="14.00">sigma_a</text>
+<text text-anchor="middle" x="72.12" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="72.12" y="-257.73" font-family="Times,serif" font-size="14.00">Exponential</text>
+</g>
+
+<!-- sigma_a&#45;&gt;like_a -->
+
+
+<g id="edge8" class="edge">
+<title>sigma_a&#45;&gt;like_a</title>
+<path fill="none" stroke="black" d="M124.31,-250.31C132.88,-246.39 141.71,-242.48 150.12,-238.95 197.11,-219.27 251.52,-199.28 290.9,-185.29"/>
+<polygon fill="black" stroke="black" points="292.32,-188.5 300.58,-181.87 289.98,-181.9 292.32,-188.5"/>
+</g>
+
+<!-- beta -->
+
+
+<g id="node10" class="node">
+<title>beta</title>
+<ellipse fill="none" stroke="black" cx="467.12" cy="-276.43" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="467.12" y="-287.73" font-family="Times,serif" font-size="14.00">beta</text>
+<text text-anchor="middle" x="467.12" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="467.12" y="-257.73" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- beta&#45;&gt;like_a -->
+
+
+<g id="edge9" class="edge">
+<title>beta&#45;&gt;like_a</title>
+<path fill="none" stroke="black" d="M435.71,-247.37C420.17,-233.5 401.27,-216.61 384.75,-201.86"/>
+<polygon fill="black" stroke="black" points="386.65,-198.87 376.86,-194.82 381.99,-204.09 386.65,-198.87"/>
+</g>
+
+<!-- delta -->
+
+
+<g id="node11" class="node">
+<title>delta</title>
+<ellipse fill="none" stroke="black" cx="584.12" cy="-498.34" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="584.12" y="-509.64" font-family="Times,serif" font-size="14.00">delta</text>
+<text text-anchor="middle" x="584.12" y="-494.64" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="584.12" y="-479.64" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- delta&#45;&gt;like_b -->
+
+
+<g id="edge4" class="edge">
+<title>delta&#45;&gt;like_b</title>
+<path fill="none" stroke="black" d="M547.21,-473.23C540,-468.89 532.42,-464.58 525.12,-460.86 485.1,-440.47 437.95,-421.39 402.38,-407.93"/>
+<polygon fill="black" stroke="black" points="403.26,-404.52 392.67,-404.29 400.8,-411.08 403.26,-404.52"/>
+</g>
+
+<!-- gamma -->
+
+
+<g id="node12" class="node">
+<title>gamma</title>
+<ellipse fill="none" stroke="black" cx="584.12" cy="-276.43" rx="49.49" ry="37.45"/>
+<text text-anchor="middle" x="584.12" y="-287.73" font-family="Times,serif" font-size="14.00">gamma</text>
+<text text-anchor="middle" x="584.12" y="-272.73" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="584.12" y="-257.73" font-family="Times,serif" font-size="14.00">Normal</text>
+</g>
+
+<!-- gamma&#45;&gt;like_a -->
+
+
+<g id="edge11" class="edge">
+<title>gamma&#45;&gt;like_a</title>
+<path fill="none" stroke="black" d="M547.22,-251.29C540.02,-246.96 532.43,-242.65 525.12,-238.95 484.01,-218.16 435.44,-198.89 399.13,-185.46"/>
+<polygon fill="black" stroke="black" points="400.29,-182.16 389.7,-182 397.88,-188.73 400.29,-182.16"/>
+</g>
+
+<!-- sigma_b -->
+
+
+<g id="node13" class="node">
+<title>sigma_b</title>
+<ellipse fill="none" stroke="black" cx="724.12" cy="-498.34" rx="72.25" ry="37.45"/>
+<text text-anchor="middle" x="724.12" y="-509.64" font-family="Times,serif" font-size="14.00">sigma_b</text>
+<text text-anchor="middle" x="724.12" y="-494.64" font-family="Times,serif" font-size="14.00">~</text>
+<text text-anchor="middle" x="724.12" y="-479.64" font-family="Times,serif" font-size="14.00">Exponential</text>
+</g>
+
+<!-- sigma_b&#45;&gt;like_b -->
+
+
+<g id="edge7" class="edge">
+<title>sigma_b&#45;&gt;like_b</title>
+<path fill="none" stroke="black" d="M671.74,-472.39C662.02,-468.23 651.85,-464.19 642.12,-460.86 561.85,-433.35 465.93,-411.72 406,-399.49"/>
+<polygon fill="black" stroke="black" points="406.46,-396.01 395.97,-397.46 405.08,-402.87 406.46,-396.01"/>
+</g>
+</g>
+</svg>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="parameter-inference">Parameter inference</h3>
+<p>We can now use PyMC's inference machinery, the Inference Buttom (tm),
+to infer the values of the parameters above.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">model_a</span><span class="p">:</span>
+    <span class="n">idata_a</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Sequential sampling (2 chains in 1 job)
+NUTS: [beta, gamma, sigma_a]
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:05&lt;00:00 Sampling chain 0, 0 divergences]
+</div>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:04&lt;00:00 Sampling chain 1, 0 divergences]
+</div>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 10 seconds.
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">model_b</span><span class="p">:</span>
+    <span class="n">idata_b</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Sequential sampling (2 chains in 1 job)
+NUTS: [delta, epsilon, sigma_b]
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:06&lt;00:00 Sampling chain 0, 0 divergences]
+</div>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:04&lt;00:00 Sampling chain 1, 0 divergences]
+</div>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 11 seconds.
+The acceptance probability does not match the target. It is 0.8982, but should be close to 0.8. Try to increase the number of tuning steps.
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">model_joint</span><span class="p">:</span>
+    <span class="n">idata_joint</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Sequential sampling (2 chains in 1 job)
+NUTS: [delta, epsilon, sigma_b, beta, gamma, sigma_a]
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:17&lt;00:00 Sampling chain 0, 0 divergences]
+</div>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:11&lt;00:00 Sampling chain 1, 0 divergences]
+</div>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 29 seconds.
+The acceptance probability does not match the target. It is 0.9213, but should be close to 0.8. Try to increase the number of tuning steps.
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I will be skipping over a rigorous Bayesian workflow here
+because it is not the point of the notebook.
+Nonetheless, here is a set of plots for our posteriors;
+you can check-them against the original Gaussian distributions above.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_a</span><span class="p">,</span> <span class="n">ref_val</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>array([&lt;AxesSubplot:title={&#39;center&#39;:&#39;beta&#39;}&gt;,
+       &lt;AxesSubplot:title={&#39;center&#39;:&#39;gamma&#39;}&gt;,
+       &lt;AxesSubplot:title={&#39;center&#39;:&#39;sigma_a&#39;}&gt;], dtype=object)</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_49_1.png"
+width=1183
+height=302
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_b</span><span class="p">,</span> <span class="n">ref_val</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>array([&lt;AxesSubplot:title={&#39;center&#39;:&#39;delta&#39;}&gt;,
+       &lt;AxesSubplot:title={&#39;center&#39;:&#39;epsilon&#39;}&gt;,
+       &lt;AxesSubplot:title={&#39;center&#39;:&#39;sigma_b&#39;}&gt;], dtype=object)</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_50_1.png"
+width=1169
+height=302
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_joint</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>array([[&lt;AxesSubplot:title={&#39;center&#39;:&#39;delta&#39;}&gt;,
+        &lt;AxesSubplot:title={&#39;center&#39;:&#39;epsilon&#39;}&gt;,
+        &lt;AxesSubplot:title={&#39;center&#39;:&#39;beta&#39;}&gt;],
+       [&lt;AxesSubplot:title={&#39;center&#39;:&#39;gamma&#39;}&gt;,
+        &lt;AxesSubplot:title={&#39;center&#39;:&#39;sigma_b&#39;}&gt;,
+        &lt;AxesSubplot:title={&#39;center&#39;:&#39;sigma_a&#39;}&gt;]], dtype=object)</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_51_1.png"
+width=1189
+height=553
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In all of the cases, we're pretty close, though a bit off. 
+As the goal here is to show a personalized counterfactual,
+we're not going to worry too much about the parameter recovery accuracy.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="personalized-counterfactuals-in-pymc">Personalized counterfactuals in PyMC</h3>
+<p>Personalized counterfactuals ask the question, 
+"What would have happened for a particular sample,
+i.e. one row in the dataset,
+had one of its observed variables been a different value?"
+In this case, we're going to take one of the observations 
+and ask what would happen if we counterfactually set <span class="arithmatex"><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> to a different value.</p>
+<p>We'll start by isolating a sample of interest:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">sample</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">491</span><span class="p">)</span>  <span class="c1"># random state for reproducibility</span>
+<span class="n">sample</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="scoped">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+<tbody>
+    <tr>
+      <th>245</th>
+      <td>1578.857375</td>
+      <td>157.056435</td>
+      <td>56.295492</td>
+      <td>-4.937509</td>
+      <td>25.404555</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We then simulate what the posterior for that sample would look like
+under the original case vs. the counterfactual case.
+In the first code block below, we set our data variables to be a single sample
+and then leverage the posterior predictive samples to simulate
+what <code>a</code> would look like under the original data.
+In the second code block, we set our data variables to be a single sample as well,
+except that we have changed <code>c</code> to be a totally different value from what it was before.
+This gives us our counterfactual scenario!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="k">with</span> <span class="n">model_a</span><span class="p">:</span>
+    <span class="c1"># Simulate posterior predictive under original observed data.</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">set_data</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]})</span>
+    <span class="n">ppc_or</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">idata_a</span><span class="p">)</span>
+
+    <span class="c1"># Simulate posterior predictive under a counterfactual scenario.</span>
+    <span class="c1"># ****This is the do-operator in action!****</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">set_data</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">})</span>
+    <span class="n">ppc_cf</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">idata_a</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:00&lt;00:00]
+</div>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+</div>
+<div class="output_area">
+<div class="output_html rendered_html output_subarea ">
+<div>
+<progress class="" max="2000" style="width:300px; height:20px; vertical-align: middle;" value="2000"></progress>
+  100.00% [2000/2000 00:00&lt;00:00]
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">ppc_or</span><span class="o">.</span><span class="n">posterior_predictive</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:     (chain: 2, draw: 1000, like_dim_0: 1)
+Coordinates:
+  * chain       (chain) int64 0 1
+  * draw        (draw) int64 0 1 2 3 4 5 6 7 ... 992 993 994 995 996 997 998 999
+  * like_dim_0  (like_dim_0) int64 0
+Data variables:
+    like        (chain, draw, like_dim_0) float64 1.587e+03 ... 1.584e+03
+Attributes:
+    created_at:                 2022-07-23T14:10:04.397013
+    arviz_version:              0.12.1
+    inference_library:          pymc
+    inference_library_version:  4.0.1</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div>
+</div>
+<p><ul class='xr-sections'><li class='xr-section-item'><input id='section-cdd8c50f-e400-4112-b1ca-b2b8fe720976' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-cdd8c50f-e400-4112-b1ca-b2b8fe720976' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>chain</span>: 2</li><li><span class='xr-has-index'>draw</span>: 1000</li><li><span class='xr-has-index'>like_dim_0</span>: 1</li></ul></p>
+</div>
+<div class='xr-section-details'>
+</div>
+<p></li><li class='xr-section-item'><input id='section-7f2fb18e-98c3-4c6d-bee2-aab2d3945713' class='xr-section-summary-in' type='checkbox'  checked><label for='section-7f2fb18e-98c3-4c6d-bee2-aab2d3945713' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></p>
+</div>
+<p><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>chain</span></p>
+</div>
+<div class='xr-var-dims'>(chain)</div>
+<div class='xr-var-dtype'>int64</div>
+<div class='xr-var-preview xr-preview'>0 1</div>
+<p><input id='attrs-e01e8fcd-a894-4596-aa39-b5752423c47b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-e01e8fcd-a894-4596-aa39-b5752423c47b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5febb354-85de-4fff-b839-dcfb76bbf411' class='xr-var-data-in' type='checkbox'><label for='data-5febb354-85de-4fff-b839-dcfb76bbf411' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label></p>
+<div class='xr-var-attrs'><dl class='xr-attrs'></dl></div>
+<div class='xr-var-data'><pre>array([0, 1])</pre></div>
+</li>
+<li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>draw</span></div><div class='xr-var-dims'>(draw)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>0 1 2 3 4 5 ... 995 996 997 998 999</div><input id='attrs-01fc8200-2deb-4406-8539-87262b3099f7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-01fc8200-2deb-4406-8539-87262b3099f7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e310cf6d-3060-4293-b720-4a2ba7f0322a' class='xr-var-data-in' type='checkbox'><label for='data-e310cf6d-3060-4293-b720-4a2ba7f0322a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([  0,   1,   2, ..., 997, 998, 999])</pre></div></li>
+<li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>like_dim_0</span></div><div class='xr-var-dims'>(like_dim_0)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>0</div><input id='attrs-cf9b55e0-9f35-4993-97de-3bc45b9038dd' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-cf9b55e0-9f35-4993-97de-3bc45b9038dd' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-738b5ead-6951-4088-b529-31b1d1ff95c1' class='xr-var-data-in' type='checkbox'><label for='data-738b5ead-6951-4088-b529-31b1d1ff95c1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([0])</pre></div></li>
+<p></ul></div></li></p>
+<li class='xr-section-item'><input id='section-ca920645-3b2d-47cc-85ea-95494afcb727' class='xr-section-summary-in' type='checkbox'  checked><label for='section-ca920645-3b2d-47cc-85ea-95494afcb727' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>like</span></div><div class='xr-var-dims'>(chain, draw, like_dim_0)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.587e+03 1.579e+03 ... 1.584e+03</div><input id='attrs-2fd45315-d019-4663-800a-374c4f31cd41' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-2fd45315-d019-4663-800a-374c4f31cd41' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9d7da896-553f-4abc-9eab-73e68a43f0e9' class='xr-var-data-in' type='checkbox'><label for='data-9d7da896-553f-4abc-9eab-73e68a43f0e9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[1587.07786376],
+        [1579.22142173],
+        [1591.73356013],
+        ...,
+        [1601.59229977],
+        [1578.46236853],
+        [1591.30863738]],
+
+       [[1590.83753783],
+        [1573.04613255],
+        [1574.44687758],
+        ...,
+        [1575.81574783],
+        [1576.57422809],
+        [1584.35188303]]])</pre></div></li></ul></div></li>
+<li class='xr-section-item'><input id='section-10c9a40e-9ee2-493a-abbe-e9697c503e33' class='xr-section-summary-in' type='checkbox'  checked><label for='section-10c9a40e-9ee2-493a-abbe-e9697c503e33' class='xr-section-summary' >Attributes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>created_at :</span></dt><dd>2022-07-23T14:10:04.397013</dd><dt><span>arviz_version :</span></dt><dd>0.12.1</dd><dt><span>inference_library :</span></dt><dd>pymc</dd><dt><span>inference_library_version :</span></dt><dd>4.0.1</dd></dl></div></li>
+<p></ul></div></div>
+</div></p>
+</div>
+<p></div>
+</div></p>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">ppc_or</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;like&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Original&quot;</span><span class="p">)</span>
+
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">ppc_cf</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;like&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Counterfactual&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>Text(0.5, 1.0, &#39;Counterfactual&#39;)</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_58_1.png"
+width=572
+height=322
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What's really cool here is that we've done a personalized counterfactual
+for that particular student.
+In this case, we set the cost of the student's tuition fees to 1/10 the original, 
+akin to sending them from a private school to a public school.
+Under this particularly flawed model, we would expect their sum of grades to go down,
+though not by a large magnitude.</p>
+<p>The key trick to enabling this
+was using <code>pm.Data()</code> containers for our data,
+thus registering them with PyMC (and Aesara underneath)
+as being hot-swappable entities with <code>pm.set_data()</code>.</p>
+<p>Finally, because our <em>posterior</em> distributions 
+contain our probabilistic beliefs having seen the data,
+or more colloquially, "fits of our parameters",
+we sample from the <em>posterior predictive</em> distribution
+to identify what we would have gotten in a counterfactual situation.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="the-do-operator-global-counterfactuals">The do-operator: global counterfactuals</h2>
+<p>Let’s also think about another possible counterfactual question: 
+What if the system parameters were different?</p>
+<p>Recall here that “system parameters” refer to the linear coefficients. 
+They aren’t properties of any observation (or sample), 
+but are properties of the entire system as a whole, 
+hence the moniker “global” counterfactuals.</p>
+<p>To do global counterfactuals, 
+we actually need to condition the coefficients’ values on a particular value, 
+just like we did for data on the personalized counterfactual. 
+For example, if we conditioned <span class="arithmatex"><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>  to be equal to 0,
+in other words severing the relationship between <span class="arithmatex"><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span> and <span class="arithmatex"><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>, then:</p>
+<ol>
+<li>We are now asking for <span class="arithmatex"><span class="MathJax_Preview">P(a|do(\beta=0), \gamma, b, c)</span><script type="math/tex">P(a|do(\beta=0), \gamma, b, c)</script></span>. (Notice the omission of subscript <span class="arithmatex"><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>, it’s intentional!)</li>
+<li>Our counterfactual question presumes a known value of <span class="arithmatex"><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>, but not a presumed known value of any of <span class="arithmatex"><span class="MathJax_Preview">(b, c)</span><script type="math/tex">(b, c)</script></span>. (We aren't asking about any particular sample, after all!)</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One way we can implement this do-operation is to reconstruct the model from our posteriors
+while hard-coding the value of <span class="arithmatex"><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span> to 0.</p>
+<p>Let's see how to make this happen.</p>
+<p>Firstly, in order to take advantage of our fitted posteriors,
+we will use a <code>from_posterior</code> function written implemented in the PyMC how-to guides.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span> 
+
+<span class="c1"># Credit: https://docs.pymc.io/projects/examples/en/latest/pymc3_howto/updating_priors.html</span>
+<span class="k">def</span> <span class="nf">from_posterior</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">samples</span><span class="p">):</span>
+    <span class="n">smin</span><span class="p">,</span> <span class="n">smax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">smax</span> <span class="o">-</span> <span class="n">smin</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">smin</span><span class="p">,</span> <span class="n">smax</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">samples</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># what was never sampled should have a small probability but not 0,</span>
+    <span class="c1"># so we&#39;ll extend the domain and use linear approximation of density on it</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">width</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">width</span><span class="p">]])</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">Interpolated</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then, we'll need to rewrite the model a little bit,
+this time hard-coding one of the variables to a particular value.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model_a_modified</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">])</span>
+    <span class="c1"># Model parameters</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># ****This is the do-operator in action!****</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">from_posterior</span><span class="p">(</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="n">idata_a</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;gamma&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">sigma_a</span> <span class="o">=</span> <span class="n">from_posterior</span><span class="p">(</span><span class="s2">&quot;sigma_a&quot;</span><span class="p">,</span> <span class="n">idata_a</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;sigma_a&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;like&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">beta</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_a</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>/usr/share/miniconda3/envs/causality/lib/python3.9/site-packages/pymc/data.py:667: FutureWarning: The `mutable` kwarg was not specified. Currently it defaults to `pm.Data(mutable=True)`, which is equivalent to using `pm.MutableData()`. In v4.1.0 the default will change to `pm.Data(mutable=False)`, equivalent to `pm.ConstantData`. Set `pm.Data(..., mutable=False/True)`, or use `pm.ConstantData`/`pm.MutableData`.
+  warnings.warn(
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, since our posteriors have become priors in this new model,
+we sample from the prior predictive distribution:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">model_a_modified</span><span class="p">:</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>/usr/share/miniconda3/envs/causality/lib/python3.9/site-packages/pymc/distributions/continuous.py:3704: RuntimeWarning: divide by zero encountered in double_scalars
+  np.where(np.abs(pdf[index]) &lt;= 1e-8, np.zeros(index.shape), (p - cdf[index]) / pdf[index]),
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we're able to examine how our observations have changed
+based on the intervention at the system.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_global_counterfactual</span><span class="p">(</span><span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">prior_predictive</span><span class="p">[</span><span class="s2">&quot;like&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="n">idx</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original value: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="n">plot_global_counterfactual</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plot_global_counterfactual</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_68_0.png"
+width=350
+height=267
+>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_68_1.png"
+width=349
+height=267
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can see here that by severing the connection between the IQ of a student and their grades,
+each student's total sum of grades goes down to 1/20th of their original.
+Those of us smarter than this author would probably have intuited this point without needing to code it up (by examining the magnitude of the slope coefficients),
+but in the case of exotic functional forms with interaction terms (or a neural net structure),
+the value of an explicit, global perturbation of an interpretable parameter is quite evident!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="the-do-operator-combining-global-and-personalized-counterfactuals">The do-operator: combining global and personalized counterfactuals</h2>
+<p>If we’re thinking logically here, 
+we’ll soon realize that it’s also possible 
+to combine the two aforementioned counterfactuals together. 
+We can ask the question, 
+what is <span class="arithmatex"><span class="MathJax_Preview">P(a_i | do(\beta=0, b_i=B), \gamma, c_i)</span><script type="math/tex">P(a_i | do(\beta=0, b_i=B), \gamma, c_i)</script></span>? 
+(Note again the presence of the index <span class="arithmatex"><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>!)</p>
+<p>Algorithmically, this question essentially translates to:</p>
+<ol>
+<li>picking out sample <span class="arithmatex"><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>, </li>
+<li>setting <span class="arithmatex"><span class="MathJax_Preview">b=B</span><script type="math/tex">b=B</script></span>, </li>
+<li>setting <span class="arithmatex"><span class="MathJax_Preview">beta=3.14</span><script type="math/tex">beta=3.14</script></span>,</li>
+<li>and evaluating what <span class="arithmatex"><span class="MathJax_Preview">a_i</span><script type="math/tex">a_i</script></span> would look like under those two conditions.</li>
+</ol>
+<p>For the sake of illustration, here it is in PyMC code:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">model_a_modified</span><span class="p">:</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">set_data</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]})</span>
+    <span class="n">ppc_or</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">()</span>
+
+    <span class="c1"># cf = &quot;counterfactual&quot;</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">set_data</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">})</span>
+    <span class="n">ppc_cf</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">ppc_or</span><span class="o">.</span><span class="n">prior_predictive</span><span class="p">[</span><span class="s2">&quot;like&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Distribution of $a$ with $\beta=0$ and $c = c_i$&quot;</span><span class="p">)</span>
+
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">ppc_cf</span><span class="o">.</span><span class="n">prior_predictive</span><span class="p">[</span><span class="s2">&quot;like&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Distribution of $a$ with $\beta=0$ and $c = \frac</span><span class="si">{c_i}{10}</span><span class="s2">$&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>Text(0.5, 1.0, &#39;Distribution of $a$ with $\\beta=0$ and $c = \\frac{c_i}{10}$&#39;)</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_72_1.png"
+width=854
+height=325
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="framework">Framework</h2>
+<p>Having worked through this example, we've finally arrived at a framework for thinking through the connection between Bayesian models and causal models. </p>
+<p>To know which kind of counterfactual we need to employ, we have to be extremely clear on the exact question we’re trying to ask. Are we trying to ask:</p>
+<ol>
+<li>A personalized question? (”What would have happened to this particular sample had its dependent variable been set to a particular value?”)</li>
+<li>A systems-level question? (”What would happen to all of our observations if a system parameter was set to a particular value?”)</li>
+<li>A hybrid question? (”What would have happened to this particular sample had its dependent variable been set to a particular value <em>and</em> the system parameter set to a particular value?”)</li>
+</ol>
+<p>If we have our variables’ dependencies clearly and explicitly stated, then it becomes easy to ask the do-operator family of questions, which basically are asking, “What happens if we set something in the model to a particular value?”</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="summary">Summary</h2>
+<p>In this notebook, we have seen how to do causal inference on Bayesian models written in PyMC. 
+We started with the contrast and comparison between causal and Bayesian inference.
+Then, we went through the logical framework of asking counterfactuals on (1) a per-sample basis, (2) a system-wide basis, and (3) both together.</p>
+<p>The value of the do-operator, and by extension causal methods,
+is that they provide us the ability to ask these "what if" questions
+in cases where conducting an experiment would be unethical, cost-prohibitive, or logistically challenging.
+Combining it with Bayesian models gives us the ability to assess
+what would have happened in a counterfactual world (causal)
+while also calculating the full range of possibilities (Bayesian).
+Blending the two together is nothing more than a matter of logic!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="credits">Credits</h2>
+<p>I would like to credit Thomas Wiecki and Ben Vincent for reviewing an early draft of this notebook.</p>
+</div>
+</div>
+</div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../06-causality-identifiability/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 06: Causal Identifiability" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              06: Causal Identifiability
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/ericmjl" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/ericmjl" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://linkedin.com/in/ericmjl" target="_blank" rel="noopener" title="linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["instant"], "search": "../assets/javascripts/workers/search.0bbba5b5.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+        <script src="https://hypothes.is/embed.js"></script>
+      
+    
+  </body>
+</html>
